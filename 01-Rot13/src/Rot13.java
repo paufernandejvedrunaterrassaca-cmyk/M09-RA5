@@ -15,13 +15,13 @@ public class Rot13 {
 
         for (int i = 0; i < msgs.length; i++) {
             msgsXifrats[i] = xifraRot13(msgs[i]);
-            System.out.printf("%-23s => %s%n", msgs[i] + msgsXifrats[i]);
+            System.out.printf("%-23s => %s%n", msgs[i], msgsXifrats[i]);
         }
 
         System.out.println("\nDesXifrat\n---------");
 
-        for(String msg: msgsXifrats) {
-            System.out.printf("%-23s => %s%n", msg + desxifraRot13(msg));
+        for (String msg : msgsXifrats) {
+            System.out.printf("%-23s => %s%n", msg, desxifraRot13(msg));
         }
     }
 
@@ -29,21 +29,65 @@ public class Rot13 {
         String resultat = "";
 
         for (int i = 0; i < cadena.length(); i++) {
-            char cadena2 = cadena.charAt(i);
+            char c = cadena.charAt(i);
+            boolean trobat = false;
 
-            for (int j = 0; j < minuscules.length(); j++) {
-                if (cadena2 == minuscules[j]) {
-                    resultat += minuscules[(j + 13)];
+            for (int j = 0; j < minuscules.length; j++) {
+                if (c == minuscules[j]) {
+                    resultat += minuscules[(j + 13) % minuscules.length];
+                    trobat = true;
+                    break;
                 }
             }
+
+            if (!trobat) {
+                for (int j = 0; j < majuscules.length; j++) {
+                    if (c == majuscules[j]) {
+                        resultat += majuscules[(j + 13) % majuscules.length];
+                        trobat = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!trobat) {
+                resultat += c;
+            }
         }
-        
 
         return resultat;
-
     }
 
     public static String desxifraRot13(String cadena) {
-        return "";
+        String resultat = "";
+
+        for (int i = 0; i < cadena.length(); i++) {
+            char c = cadena.charAt(i);
+            boolean trobat = false;
+
+            for (int j = 0; j < minuscules.length; j++) {
+                if (c == minuscules[j]) {
+                    resultat += minuscules[(j - 13 + minuscules.length) % minuscules.length];
+                    trobat = true;
+                    break;
+                }
+            }
+
+            if (!trobat) {
+                for (int j = 0; j < majuscules.length; j++) {
+                    if (c == majuscules[j]) {
+                        resultat += majuscules[(j - 13 + majuscules.length) % majuscules.length];
+                        trobat = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!trobat) {
+                resultat += c;
+            }
+        }
+
+        return resultat;
     }
 }
