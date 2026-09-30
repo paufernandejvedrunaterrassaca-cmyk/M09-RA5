@@ -2,39 +2,112 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Monoalfabetic {
-    
-    public final String alfabet = "aáàbcçdeéèfghiíìïjklmnñoóòpqrstuúùüvwxyz";
+
+    public final String lletres = "AÁÀBCÇDEÉÈFGHIÍÌÏJKLMNÑOÓÒPQRSTUÚÙÜVWXYZ";
+
+    public char[] alfabetPermutat = permutaAlfabet(lletres);
     public static void main(String[] args) {
+        
         Monoalfabetic mono = new Monoalfabetic();
+
+        for (char c : mono.lletres.toCharArray()) {
+            System.out.print(c + " ");
+        }
+        
+        System.out.println();
+        
+        for (char c : mono.alfabetPermutat) {
+            System.out.print(c + " ");
+        }
+        
+        System.out.println("\n\nXifratge:");
+
+        String[] tests = {"Test 01 àrbritre, coixi, Perimetre", "Test 02 Taüll, DĨA, año", "Test 03 Peça, Örrius, Bóvila"};
+
+        String[] msgsXifrats = new String[tests.length];
+
+        for (int i = 0; i < tests.length; i++) {
+            msgsXifrats[i] = mono.xifraMonoAlfa(tests[i]);
+            System.out.printf("%-35s -> %s%n", tests[i], msgsXifrats[i]);
+        }
+
+        System.out.println("\nDesxifratge:");
+
+        for (int i = 0; i < msgsXifrats.length; i++) {
+            System.out.printf("%-35s -> %s%n", msgsXifrats[i], tests[i]);
+        }
     }
 
     public char[] permutaAlfabet(String alfabet) {
-        ArrayList<Character> llista = new ArrayList<>();
 
+        ArrayList<Character> llista = new ArrayList<>();
         for (char c : alfabet.toCharArray()) {
             llista.add(c);
         }
 
         Collections.shuffle(llista);
-        char[] resultat = new char[llista.size()]
 
+        char[] resultat = new char[llista.size()];
+        
         for (int i = 0; i < llista.size(); i++) {
             resultat[i] = llista.get(i);
         }
-        
-        return resultat;
 
+        return resultat;
     }
 
     public String xifraMonoAlfa(String cadena) {
+       
         String resultat = "";
 
-        
-        return resultat;
+       for (char c : cadena.toCharArray()){
+            boolean minus = Character.isLowerCase(c);
+            char toMajus = Character.toUpperCase(c);
+
+            int index = lletres.indexOf(toMajus);
+            
+            if (index != -1){
+                char lletraXifrada = alfabetPermutat[index];
+                if (minus) {
+                    lletraXifrada = Character.toLowerCase(lletraXifrada);
+                }
+                resultat += lletraXifrada;
+            } else {
+                resultat += c;
+            }
+       }
+       
+       return resultat;
     }
 
     public String desxifraMonoAlfa(String cadena) {
-        return "";
-    }  
-    
+
+        String resultat = "";
+
+        for (char c : cadena.toCharArray()){
+            boolean minus = Character.isLowerCase(c);
+            char toMajus = Character.toUpperCase(c);
+
+            int indexPermutat = -1;
+           
+            for (int i = 0; i < alfabetPermutat.length; i++) {
+                if (alfabetPermutat[i] == toMajus){
+                    indexPermutat = i;
+                    break;
+                }
+            }
+
+            if (indexPermutat != -1){
+                char lletraAnterior= lletres.charAt(indexPermutat);
+                if (minus) {
+                    lletraAnterior = Character.toLowerCase(lletraAnterior);
+                }
+                resultat += lletraAnterior;
+            } else {
+                resultat += c;
+            }
+        }
+        
+        return resultat;
+    }
 }
