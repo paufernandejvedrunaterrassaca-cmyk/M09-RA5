@@ -1,6 +1,7 @@
 {
     "java.project.sourcePaths": [
-        "06-Factory\\src"
+        "06-Factory/src",
+        "08-Hashes/src"
     ],
     "java.project.referencedLibraries": []
 }
